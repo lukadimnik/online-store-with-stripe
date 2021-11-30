@@ -3,13 +3,19 @@ import { FC } from 'react';
 interface ButtonProps {
     disabled?: boolean;
     className?: string;
-    onClick: () => void;
+    onClick?: () => void;
+    outline?: boolean;
 }
 
 const Button: FC<ButtonProps> = (props) => {
+    const {children, className, outline, ...rest} = props;
+
+    const btnClass = outline ? 'btn-outline' : 'btn-default';
+    const extraBtnClass = className ? ` ${className}` : '';
+
     return (
-        <button disabled={props.disabled} onClick={props.onClick} className={props.className}>
-            {props.children}
+        <button className={`btn ${btnClass}${extraBtnClass}`} {...rest}>
+            {children}
         </button>
     );
 };
