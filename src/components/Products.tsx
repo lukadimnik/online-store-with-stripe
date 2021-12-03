@@ -2,30 +2,32 @@ import { useState, useEffect } from "react";
 import useFetch from '../helpers/UseFetch';
 import Product from './Product';
 import Loader from './UI/Loader';
+import axios from 'axios';
 
 interface StoreProduct {
     id: number;
     name: string;
     price: number;
     image: string;
+    price_id: number;
+    description: string;
 }
 
 const Products = () => {
-    const [products, setProducts] = useState([]);
-
-    const { loading, get } = useFetch('http://localhost:3001')
+    const [products, setProducts]: [StoreProduct[], any] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        get('products')
-            .then(data => {
-                console.log(data)
-                setProducts(data)
+        axios.get<StoreProduct[]>('http://localhost:3001/products')
+            .then(res => {
+                setProducts(res.data)
+                setLoading(false)
             })
-            .catch(err => console.log('Could not fetch products', err))
+            .catch((err) => console.log(err))
     }, [])
 
     const productsList = () => {
-        return products.map(item => <Product key={item.id} {...item} />)
+        return products.map((item) => <Product key={item.id} {...item} />)
     }
 
     return <div className="products-layout">
