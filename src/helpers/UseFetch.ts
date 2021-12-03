@@ -22,7 +22,7 @@ const useFetch = (baseUrl: string) => {
     });
   };
 
-  const post = (url: string, body) => {
+  const post = (url: string, body: any) => {
     return new Promise((resolve, reject) => {
       fetch(baseUrl + url, {
         method: 'post',
